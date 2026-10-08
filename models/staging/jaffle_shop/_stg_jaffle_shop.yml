@@ -1,0 +1,31 @@
+models:
+  - name: stg_raw__jaffle_shop_customers
+    description: The grain of this table is one unique customer per row
+    columns: 
+      - name: customer_id
+        description: primary key for the customers table
+        data_tests:
+          - unique
+          - not_null
+          
+  - name: stg_raw__jaffle_shop_orders
+    description: The grain of this table is one order per row
+    columns: 
+      - name: order_id
+        description: primary key for the orders table
+        data_tests:
+          - unique
+          - not_null
+      - name: order_status
+        description: "{{doc('order_status')}}"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['completed','shipped','placed','return_pending','returned']
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref(stg_raw__jaffle_shop_customers)
+                field: customer_id
+      

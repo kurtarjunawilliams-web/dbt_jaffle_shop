@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    database: dbt_jaffle_shop
+    schema: raw
+    description: A clone of a Postgres application database
+    tables:
+      - name: customers
+        description: Raw customers data
+        identifier: jaffle_shop_customers
+        columns:
+          - name: id
+            description: Primary key for customers data
+            data_tests:
+             - unique
+             - not_null
+          
+      - name: orders
+        description: Raw orders data
+        identifier: jaffle_shop_orders
+        columns:
+          - name: id
+            description: Primary key for orders data
+            data_tests:
+             - unique
+             - not_null
