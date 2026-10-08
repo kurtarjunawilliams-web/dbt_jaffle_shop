@@ -1,7 +1,22 @@
 version: 2
 
 sources:
-  - name: raw
+  - name: jaffle_shop
+    database: dbt_jaffle_shop
+    schema: raw
     tables:
-      - name: jaffle_shop_customers
-      - name: jaffle_shop_orders
+      - name: customers
+        identifier: jaffle_shop_customers
+        columns:
+          - name: id
+            data_tests:
+             - unique
+             - not_null
+          
+      - name: orders
+        identifier: jaffle_shop_orders
+        columns:
+          - name: id
+            data_tests:
+             - unique
+             - not_null

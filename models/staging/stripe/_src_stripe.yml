@@ -1,6 +1,9 @@
 version: 2
 
 sources:
-  - name: raw
+  - name: stripe
+    database: dbt_jaffle_shop
+    schema: raw
     tables:
-      - name: stripe_payments
+      - name: payments
+        identifier: stripe_payments
