@@ -1,0 +1,24 @@
+models:
+  - name: stg_raw__stripe_payments
+    description:
+    columns:
+      - name: payment_status
+        description: Whether the payment was successful or not
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['Success','Fail']
+      - name: payment_method
+        description: "{{doc('payment_method')}}"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['Credit Card','Coupon','Bank Transfer','Gift Card']
+      - name: order_id
+        description:  the order that the payment is associated with
+        data_tests:
+          - relationships:
+              arguments: 
+                to: ref('stg_raw__jaffle_shop_orders')
+                field: order_id
+
