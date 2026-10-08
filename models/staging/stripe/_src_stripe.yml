@@ -2,8 +2,12 @@ version: 2
 
 sources:
   - name: stripe
+    description: Replica of Stripe SQL database
     database: dbt_jaffle_shop
     schema: raw
     tables:
       - name: payments
+        description: Contains raw stripe payments data
         identifier: stripe_payments
+
+          
