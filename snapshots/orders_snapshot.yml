@@ -1,0 +1,11 @@
+snapshots:
+  - name: orders_snapshot
+    relation: source('jaffle_shop', 'orders')
+    description:  A snapshot of the orders table
+    config:
+      database: dbt_jaffle_shop
+      schema: snapshots
+      strategy: timestamp
+      updated_at: updated_at
+      unique_key: id
+      hard_deletes: ignore
