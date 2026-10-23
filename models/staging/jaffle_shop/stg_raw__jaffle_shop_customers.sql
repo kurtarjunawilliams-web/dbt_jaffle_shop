@@ -1,20 +1,22 @@
-with 
+-- Import CTEs
+with
+    source as (select * from {{ source("jaffle_shop", "customers") }}),
 
-source as (
+-- Logical CTEs
 
-    select * from {{ source('jaffle_shop', 'customers') }}
+    transformed as (
 
-),
+        select 
 
-renamed as (
+            id as customer_id,
+            last_name,
+            first_name,
+            first_name || '' || last_name as full_name
 
-    select
-        id as customer_id,
-        first_name,
-        last_name
-
-    from source
+        from source
 
 )
 
-select * from renamed
+-- Final Select
+select *
+from transformed
