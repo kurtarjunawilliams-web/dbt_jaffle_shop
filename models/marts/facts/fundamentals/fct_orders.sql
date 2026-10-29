@@ -1,11 +1,3 @@
-{{
-  config(
-    materialized = 'incremental',
-    unique_key = 'order_id',
-    incremental_strategy = 'merge',
-  )
-}}
-
 --Import CTEs
 with orders as  (
     select * from {{ ref ('stg_raw__jaffle_shop_orders' )}}
@@ -19,17 +11,11 @@ payments as (
 order_payments as (
     select
         order_id,
-        sum (case when payment_status = 'success' then payment_amount_usd end) as amount
+        sum (case when payment_status = 'Success' then payment_amount_usd end) as amount
 
     from payments
     group by 1
 ),
-{% if is_incremental() %}
--- Calculate the max date first in a separate Databricks-friendly pass
-max_date as (
-    select max(order_date) as max_val from {{ this }}
-),
-{% endif %}
 
 --Final CTE
  final as (
@@ -45,9 +31,3 @@ max_date as (
 )
 
 select * from final
-
-
-{% if is_incremental() %}
-where
-order_date >= max_date
-{% endif %}
