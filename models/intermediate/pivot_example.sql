@@ -1,3 +1,7 @@
+{{ config(
+  enabled= false
+) }}
+
 {%-set payment_methods = ['Bank Transfer','Credit Card','Coupon','Gift Card'] -%}
 {{payment_methods}}
 

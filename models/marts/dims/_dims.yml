@@ -1,0 +1,9 @@
+models:
+  - name: dim_customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - dbt_utils.cardinality_equality:
+              arguments:
+                field: customer_id
+                to: ref('stg_raw__jaffle_shop_customers') 

@@ -1,0 +1,91 @@
+models:
+  - name: fct_customer_orders
+    columns:
+      - name: customer_id
+        data_tests:
+        - relationships:
+            arguments:
+              to: ref('dim_customers')
+              field: customer_id
+
+  - name: fct_order_items
+    columns:
+      - name: customer_id
+        data_tests:
+        - relationships:
+            arguments:
+              to: ref('dim_customers')
+              field: customer_id
+
+  - name: fct_orders
+    columns:
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+      - name: amount
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0  # (Optional)
+                max_value: 100 # (Optional)
+                strictly: false # (Optional. Default is 'false'. Adds an 'or equal to' to the comparison operator for min/max)   
+                config:
+                  severity: warn
+                  store_failures: true # materialized failed rows in dw table
+
+  - name: fct_orders_v2
+    columns:
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+  - name: fct_orders_mesh
+    latest_version: 1 ##Call out which version will be the default version when running this model
+    config:
+      access: private
+      contract:
+        enforced: false
+    columns:
+      - name: order_id
+        data_type: string
+      - name: location_id
+        data_type: string
+      - name: customer_id
+        data_type: string
+      - name: order_total
+        data_type: decimal(19,4)
+      - name: tax_paid
+        data_type: decimal(19,4)
+      - name: ordered_at
+        data_type: timestamp
+      - name: customer_name
+        data_type: string
+      - name: location_name
+        data_type: string
+      - name: tax_rate
+        data_type: decimal(19,4)
+      - name: location_opened_at
+        data_type: timestamp
+      - name: ordered_month
+        data_type: integer
+      - name: ordered_day
+        data_type: integer
+      - name: ordered_year
+        data_type: integer
+    versions: ###Add versioning section defining each version and listing changes to contract
+      - v: 1
+          ##Matches above! Nothing more needed
+      - v: 2
+        columns:
+          - name: order_amount ##v2 Adds in new column name and date type change
+            data_type: decimal(19,4)
+          - name: location_opened_at
+            data_type: date
+          - include: all #Includes all other fields
+            exclude: [order_total] #But removes the old name of order_total

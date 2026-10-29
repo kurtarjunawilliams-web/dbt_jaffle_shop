@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: jaffle_shop_mesh
+    database: dbt_jaffle_shop
+    schema: raw
+    description: E-commerce data
+    tables:
+      - name: customers
+        identifier: jaffle_shop_customers_mesh
+        description: One record per person who has purchased one or more items
+      - name: orders
+        identifier: jaffle_shop_orders_mesh
+        description: One record per order (consisting of one or more order items)
+      - name: items
+        identifier: jaffle_shop_items
+        description: Items included in an order
+      - name: stores
+        identifier: jaffle_shop_stores
+      - name: products
+        identifier: jaffle_shop_products
+        description: One record per SKU for items sold in stores
+      - name: supplies
+        identifier: jaffle_shop_supplies
+        description: One record per supply per SKU of items sold in stores
